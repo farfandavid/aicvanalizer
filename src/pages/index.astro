@@ -267,7 +267,8 @@ import Layout from "../layouts/Layout.astro";
 				return true;
 			}
 		}
-		pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
+		pdfjsLib.GlobalWorkerOptions.workerSrc =
+			"/ajax/libs/pdf.js/4.5.136/pdf.worker.mjs";
 		document.getElementById("doc").addEventListener("change", () => {
 			const file = document.getElementById("doc").files[0];
 			if (validateFile(file) === false) {
