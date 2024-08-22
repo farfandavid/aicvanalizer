@@ -26,7 +26,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
     if (!passed) {
         console.log("Recaptcha failed");
-        return new Response(JSON.stringify({ success: true }), {
+        return new Response(JSON.stringify({ success: false, message: "Completa el Recaptcha" }), {
             status: 403,
             headers: {
                 "content-type": "application/json",

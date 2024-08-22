@@ -134,11 +134,7 @@ import Layout from "../layouts/Layout.astro";
 				class="w-full max-w-96 border min-h-[400px] rounded-md col-span-2 md:col-span-2 place-self-center"
 			></canvas>
 		</div>
-		<div
-			id="card-container"
-			class="flex gap-3 flex-wrap w-full p-2 min-h-96"
-		>
-		</div>
+		<div id="card-container" class="flex gap-3 flex-wrap w-full p-2"></div>
 		<div
 			id="card-template"
 			data-card
@@ -340,7 +336,6 @@ import Layout from "../layouts/Layout.astro";
 		console.log(formData);
 	}); */
 	btnUpload.addEventListener("click", async () => {
-		console.log(localStorage.getItem("gResponse"));
 		const reader = JSON.parse(localStorage.getItem("gResponse")!) as CV;
 		//Clear Card Container
 		cardContainer.innerHTML = "";
@@ -419,7 +414,11 @@ import Layout from "../layouts/Layout.astro";
 		document.getElementById("totalScoreText")!.textContent = (
 			totalScore / 11
 		).toFixed(0);
-		new Chart(document.getElementById("totalScore") as HTMLCanvasElement, {
+		const totalChart = document.getElementById(
+			"totalScore",
+		) as HTMLCanvasElement;
+		Chart.getChart(totalChart)?.destroy();
+		new Chart(totalChart, {
 			type: "doughnut",
 			data: {
 				labels: ["GOOD", "BAD"],
@@ -469,7 +468,6 @@ import Layout from "../layouts/Layout.astro";
 				},
 			},
 		});
-		console.log(reader);
 	});
 	dropArea.addEventListener("dragover", (e) => {
 		e.preventDefault();
@@ -501,7 +499,6 @@ import Layout from "../layouts/Layout.astro";
 		} else if (e.dataTransfer?.files) {
 			inputDoc.files = e.dataTransfer.files;
 			inputDoc.dispatchEvent(new Event("change"));
-			console.log(inputDoc.files[0]);
 		}
 	});
 </script>
