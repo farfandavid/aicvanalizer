@@ -44,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
         });
     }
     let prompt = `
-Analiza el curriculum en español, se exigente, si es que detectas que no es un curriculum pon en el feedback que no se puede evaluar.
+Analiza el curriculum en español, si es una imagen tambien analizalo, se exigente, si es que detectas que no es un curriculum pon en el feedback que no se puede evaluar.
 `;
     const filePart = await fileToGenerativePart(file);
     const generateContent = await gemini.generateContent([prompt, filePart]).catch((err) => {
