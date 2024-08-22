@@ -6,7 +6,7 @@ import cors from 'cors';
 const app = express();
 
 // Lista blanca de dominios permitidos
-const whitelist = ['http://aicvanalizer.online', 'http://www.aicvanalizer.online', 'http://localhost:3000', 'http://localhost:4321'];
+const whitelist = ['http://aicvanalizer.online', 'http://www.aicvanalizer.online', 'http://localhost:3000', 'http://localhost:4321', "https://aicvanalizer.onrender.com"];
 
 // Configurar CORS con opciones avanzadas y mensaje de error personalizado
 const corsOptions = {
