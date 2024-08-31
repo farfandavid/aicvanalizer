@@ -7,6 +7,35 @@ const { title } = Astro.props;
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
+        <!-- Author -->
+        <meta name="author" content="Farfan David Dante" />
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.aicvanalizer.online/" />
+        <meta property="og:title" content={title} />
+        <meta
+            property="og:description"
+            content="Analiza y Mejora tu CV con IA"
+        />
+        <meta
+            property="og:image"
+            content="https://www.aicvanalizer.online/og.jpeg"
+        />
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+            property="twitter:url"
+            content={"https://www.aicvanalizer.online/"}
+        />
+        <meta property="twitter:title" content={title} />
+        <meta
+            property="twitter:description"
+            content="Analiza y Mejora tu CV con IA"
+        />
+        <meta
+            property="twitter:image"
+            content="https://www.aicvanalizer.online/og.jpeg"
+        />
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.mjs"
             type="module"></script>
