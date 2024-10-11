@@ -1,544 +1,523 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const countryCode = Astro.request.headers.get("CF-IPCountry");
+const country = countryCode
+  ? new Intl.DisplayNames(["es"], { type: "region" }).of(countryCode)
+  : "Desconocido";
+console.log(country);
 ---
 
 <Layout title="AI CV Analizer">
-	<div class="w-full hidden">
-		<a
-			href="https://cafecito.app/farfetchdev"
-			rel="noopener noreferrer"
-			target="_blank"
-			><img
-				srcset="https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x"
-				src="https://cdn.cafecito.app/imgs/buttons/button_1.png"
-				alt="Invitame un café en cafecito.app"
-			/></a
-		>
-		<form
-			action="https://www.paypal.com/donate"
-			method="post"
-			target="_top"
-		>
-			<input
-				type="hidden"
-				name="hosted_button_id"
-				value="9X5M3HPLKJZEN"
-			/>
-			<input
-				type="image"
-				src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-				name="submit"
-				title="PayPal - The safer, easier way to pay online!"
-				alt="Donate with PayPal button"
-			/>
-			<img
-				alt=""
-				src="https://www.paypal.com/en_AR/i/scr/pixel.gif"
-				width="1"
-				height="1"
-			/>
-		</form>
-	</div>
-	<main class="md:w-3/5 mx-auto">
-		<h1 class="text-center font-bold text-2xl my-4 uppercase">
-			ai cv analizer
-		</h1>
-		<div
-			class="md:w-2/3 mx-auto border-dashed border-2 h-72 bg-slate-50/5 rounded-md relative"
-		>
-			<label
-				id="drop-area"
-				for="doc"
-				class="w-full h-full absolute flex items-center justify-center z-40 font-bold text-center"
-			>
-				Arrastra y suelta tu archivo aquí
-			</label>
-			<svg
-				class="w-32 h-32 mx-auto absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
-				viewBox="0 0 24.00 24.00"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg"
-				stroke="#000000"
-				stroke-width="0.192"
-				transform="rotate(0)"
-				><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
-					id="SVGRepo_tracerCarrier"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke="#CCCCCC"
-					stroke-width="0.048"></g><g id="SVGRepo_iconCarrier">
-					<path
-						d="M5 5C5 3.89543 5.89543 3 7 3H11.75C11.8881 3 12 3.11193 12 3.25V8C12 9.10457 12.8954 10 14 10H18.75C18.8881 10 19 10.1119 19 10.25V19C19 20.1046 18.1046 21 17 21H7C5.89543 21 5 20.1046 5 19V5Z"
-						fill="#2A4157"
-						fill-opacity="0.24"></path>
-					<path
-						d="M13 8V3.60355C13 3.38083 13.2693 3.26929 13.4268 3.42678L18.5732 8.57322C18.7307 8.73071 18.6192 9 18.3964 9H14C13.4477 9 13 8.55228 13 8Z"
-						fill="#222222"></path>
-					<path
-						d="M12 11.5V17.5"
-						stroke="#222222"
-						stroke-linecap="round"></path>
-					<path d="M9 14.5H15" stroke="#222222" stroke-linecap="round"
-					></path>
-				</g></svg
-			>
-			<span class="text-sm absolute left-1/2 -translate-x-1/2"
-				>Solo Archivos PDF tamaño maximo: 1MB</span
-			>
-			<input
-				type="file"
-				name="doc"
-				id="doc"
-				class="opacity-0"
-				accept=".pdf,application/pdf"
-			/>
-		</div>
-		<div
-			id="form-analizer"
-			class="w-2/3 mx-auto items-center flex flex-col mt-2"
-		>
-			<button type="submit" class="hidden" id="btn-upload"></button>
-			<button
-				id="btn-analize"
-				class="g-recaptcha w-full bg-green-600 p-2 rounded hover:bg-green-700 font-bold"
-				data-sitekey="6LdTlisqAAAAAL6o5_9roSZ4mu2934f5RPbn9uxW"
-				data-callback="onSubmit"
-				data-action="submit"
-			>
-				Analizar
-			</button>
-		</div>
-		<div class="flex w-full items-center justify-center p-4"></div>
+  <div class="w-full hidden">
+    <a
+      href="https://cafecito.app/farfetchdev"
+      rel="noopener noreferrer"
+      target="_blank"
+      ><img
+        srcset="https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x"
+        src="https://cdn.cafecito.app/imgs/buttons/button_1.png"
+        alt="Invitame un café en cafecito.app"
+      /></a
+    >
+    <form action="https://www.paypal.com/donate" method="post" target="_top">
+      <input type="hidden" name="hosted_button_id" value="9X5M3HPLKJZEN" />
+      <input
+        type="image"
+        src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
+        name="submit"
+        title="PayPal - The safer, easier way to pay online!"
+        alt="Donate with PayPal button"
+      />
+      <img
+        alt=""
+        src="https://www.paypal.com/en_AR/i/scr/pixel.gif"
+        width="1"
+        height="1"
+      />
+    </form>
+  </div>
+  <main class="md:w-3/5 mx-auto">
+    <h1 class="text-center font-bold text-2xl my-4 uppercase">
+      ai cv analizer
+    </h1>
+    <div
+      class="md:w-2/3 mx-auto border-dashed border-2 h-72 bg-slate-50/5 rounded-md relative"
+    >
+      <label
+        id="drop-area"
+        for="doc"
+        class="w-full h-full absolute flex items-center justify-center z-40 font-bold text-center"
+      >
+        Arrastra y suelta tu archivo aquí
+      </label>
+      <svg
+        class="w-32 h-32 mx-auto absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
+        viewBox="0 0 24.00 24.00"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        stroke="#000000"
+        stroke-width="0.192"
+        transform="rotate(0)"
+        ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+          id="SVGRepo_tracerCarrier"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke="#CCCCCC"
+          stroke-width="0.048"></g><g id="SVGRepo_iconCarrier">
+          <path
+            d="M5 5C5 3.89543 5.89543 3 7 3H11.75C11.8881 3 12 3.11193 12 3.25V8C12 9.10457 12.8954 10 14 10H18.75C18.8881 10 19 10.1119 19 10.25V19C19 20.1046 18.1046 21 17 21H7C5.89543 21 5 20.1046 5 19V5Z"
+            fill="#2A4157"
+            fill-opacity="0.24"></path>
+          <path
+            d="M13 8V3.60355C13 3.38083 13.2693 3.26929 13.4268 3.42678L18.5732 8.57322C18.7307 8.73071 18.6192 9 18.3964 9H14C13.4477 9 13 8.55228 13 8Z"
+            fill="#222222"></path>
+          <path d="M12 11.5V17.5" stroke="#222222" stroke-linecap="round"
+          ></path>
+          <path d="M9 14.5H15" stroke="#222222" stroke-linecap="round"></path>
+        </g></svg
+      >
+      <span class="text-sm absolute left-1/2 -translate-x-1/2"
+        >Solo Archivos PDF tamaño maximo: 1MB</span
+      >
+      <input
+        type="file"
+        name="doc"
+        id="doc"
+        class="opacity-0"
+        accept=".pdf,application/pdf"
+      />
+    </div>
+    <div
+      id="form-analizer"
+      class="w-2/3 mx-auto items-center flex flex-col mt-2"
+    >
+      <button type="submit" class="hidden" id="btn-upload"></button>
+      <button
+        id="btn-analize"
+        class="g-recaptcha w-full bg-green-600 p-2 rounded hover:bg-green-700 font-bold"
+        data-sitekey="6LdTlisqAAAAAL6o5_9roSZ4mu2934f5RPbn9uxW"
+        data-callback="onSubmit"
+        data-action="submit"
+      >
+        Analizar
+      </button>
+    </div>
+    <div class="flex w-full items-center justify-center p-4"></div>
 
-		<div
-			id="preview"
-			class="hidden w-full grid-cols-2 grid-rows-2 md:grid-rows-1 gap-1"
-		>
-			<div
-				id="totalContainer"
-				class="hidden w-full h-full col-span-2 relative md:col-span-1"
-			>
-				<h2 class="text-center font-bold text-xl mt-2">Total</h2>
-				<canvas
-					id="totalScore"
-					class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 h-52 w-52 max-h-52 max-w-52"
-				></canvas>
-				<span
-					id="totalScoreText"
-					class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 font-bold text-xl"
-					>Score</span
-				>
-			</div>
-			<canvas
-				id="pdfCanvas"
-				class="w-full max-w-96 border min-h-[400px] rounded-md col-span-2 md:col-span-2 place-self-center"
-			></canvas>
-		</div>
-		<div id="card-container" class="flex gap-3 flex-wrap w-full p-2"></div>
-		<div
-			id="card-template"
-			data-card
-			class="gap-5 min-h-40 w-full p-3 bg-slate-600 rounded-md flex-nowrap hidden"
-		>
-			<div class="flex flex-col relative">
-				<h3 class="font-bold">Puntuacion</h3>
-				<span
-					data-score
-					class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 font-bold text-xl"
-					>80</span
-				>
-				<canvas
-					data-canvas
-					class="absolute top-1/2 -translate-y-1/2 w-full h-full"
-				></canvas>
-			</div>
-			<div class="w-full">
-				<h3 class="font-bold text-center" data-feedbacktitle>
-					Feedback
-				</h3>
-				<p data-feedback class="p-3"></p>
-			</div>
-		</div>
-	</main>
-	<dialog
-		id="modal"
-		class="rounded-md w-2/3 max-w-96 bg-slate-600 text-white p-5"
-		role="dialog"
-		aria-modal="true"
-	>
-		<div class="flex flex-col w-full items-center justify-center gap-3">
-			<h1 class="font-bold text-xl">Analizando</h1>
-			<p>Por favor espere</p>
-			<div class="spinner" id="spinner"></div>
-			<svg
-				id="complete-icon"
-				class="complete fill-green-600"
-				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 24 24"
-			>
-				<path
-					d="M20.285 6.708l-11.03 11.029-5.546-5.547 1.414-1.414 4.132 4.132 9.616-9.616 1.414 1.416z"
-				></path>
-			</svg>
-		</div>
-	</dialog>
-	<script is:inline>
-		const dialog = document.getElementById("modal");
-		const inputDoc = document.getElementById("doc");
+    <div
+      id="preview"
+      class="hidden w-full grid-cols-2 grid-rows-2 md:grid-rows-1 gap-1"
+    >
+      <div
+        id="totalContainer"
+        class="hidden w-full h-full col-span-2 relative md:col-span-1"
+      >
+        <h2 class="text-center font-bold text-xl mt-2">Total</h2>
+        <canvas
+          id="totalScore"
+          class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 h-52 w-52 max-h-52 max-w-52"
+        ></canvas>
+        <span
+          id="totalScoreText"
+          class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 font-bold text-xl"
+          >Score</span
+        >
+      </div>
+      <canvas
+        id="pdfCanvas"
+        class="w-full max-w-96 border min-h-[400px] rounded-md col-span-2 md:col-span-2 place-self-center"
+      ></canvas>
+    </div>
+    <div id="card-container" class="flex gap-3 flex-wrap w-full p-2"></div>
+    <div
+      id="card-template"
+      data-card
+      class="gap-5 min-h-40 w-full p-3 bg-slate-600 rounded-md flex-nowrap hidden"
+    >
+      <div class="flex flex-col relative">
+        <h3 class="font-bold">Puntuacion</h3>
+        <span
+          data-score
+          class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 font-bold text-xl"
+          >80</span
+        >
+        <canvas
+          data-canvas
+          class="absolute top-1/2 -translate-y-1/2 w-full h-full"></canvas>
+      </div>
+      <div class="w-full">
+        <h3 class="font-bold text-center" data-feedbacktitle>Feedback</h3>
+        <p data-feedback class="p-3"></p>
+      </div>
+    </div>
+  </main>
+  <dialog
+    id="modal"
+    class="rounded-md w-2/3 max-w-96 bg-slate-600 text-white p-5"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="flex flex-col w-full items-center justify-center gap-3">
+      <h1 class="font-bold text-xl">Analizando</h1>
+      <p>Por favor espere</p>
+      <div class="spinner" id="spinner"></div>
+      <svg
+        id="complete-icon"
+        class="complete fill-green-600"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M20.285 6.708l-11.03 11.029-5.546-5.547 1.414-1.414 4.132 4.132 9.616-9.616 1.414 1.416z"
+        ></path>
+      </svg>
+    </div>
+  </dialog>
+  <script is:inline>
+    const dialog = document.getElementById("modal");
+    const inputDoc = document.getElementById("doc");
 
-		const fieldsToCapitalizeES = {
-			ats_compilance: "Cumplimiento ATS",
-			clarity_conciseness_writing: "Claridad, Concisión, Escritura",
-			clarity_format: "Claridad, Formato",
-			education: "Educación",
-			experience: "Experiencia",
-			grammar_spelling: "Gramática, Ortografía",
-			links_contact: "Enlaces, Contacto",
-			professional_tone: "Tono Profesional",
-			soft_skills: "Habilidades Blandas",
-			technical_language_usage: "Uso de Lenguaje Técnico",
-			technical_skills: "Habilidades Técnicas",
-		};
+    const fieldsToCapitalizeES = {
+      ats_compilance: "Cumplimiento ATS",
+      clarity_conciseness_writing: "Claridad, Concisión, Escritura",
+      clarity_format: "Claridad, Formato",
+      education: "Educación",
+      experience: "Experiencia",
+      grammar_spelling: "Gramática, Ortografía",
+      links_contact: "Enlaces, Contacto",
+      professional_tone: "Tono Profesional",
+      soft_skills: "Habilidades Blandas",
+      technical_language_usage: "Uso de Lenguaje Técnico",
+      technical_skills: "Habilidades Técnicas",
+    };
 
-		function validateFile(file) {
-			if (
-				file == null ||
-				file.type !== "application/pdf" ||
-				file.size > 1 * 1024 * 1024
-			) {
-				console.error("No file selected");
-				alert("El archivo debe ser un PDF y no debe superar 1MB");
-				return false;
-			} else {
-				return true;
-			}
-		}
-		function onSubmit(token) {
-			const cardContainer = document.getElementById("card-container");
-			const cardTemplate = document.getElementById("card-template");
-			const file = inputDoc.files?.[0];
-			if (!validateFile(file)) {
-				console.error("No file selected");
-				alert("No file selected");
-				return;
-			}
-			const formData = new FormData();
-			formData.append("recaptcha", token);
-			formData.append("doc", file);
-			dialog.showModal();
-			fetch("/api/recap", {
-				method: "POST",
-				body: formData,
-			})
-				.then((response) => response.json())
-				.then((gResponse) => {
-					if (gResponse.success && gResponse.success === false) {
-						console.error(gResponse.message);
-						alert(gResponse.message);
-						return;
-					}
-					localStorage.setItem(
-						"gResponse",
-						JSON.stringify(gResponse),
-					);
-					const btnUpload = document.getElementById("btn-upload");
-					btnUpload.click();
-				})
-				.catch((error) => {
-					console.error("Error:", error);
-				})
-				.finally(() => {
-					dialog.close();
-				});
-		}
-	</script>
-	<script is:inline type="module">
-		var { pdfjsLib } = globalThis;
-		function validateFile(file) {
-			if (
-				file == null ||
-				file.type !== "application/pdf" ||
-				file.size > 1 * 1024 * 1024
-			) {
-				console.error("No file selected");
-				alert("El archivo debe ser un PDF y no debe superar 1MB");
-				return false;
-			} else {
-				return true;
-			}
-		}
-		pdfjsLib.GlobalWorkerOptions.workerSrc =
-			"/ajax/libs/pdf.js/4.5.136/pdf.worker.mjs";
-		document.getElementById("doc").addEventListener("change", () => {
-			const file = document.getElementById("doc").files[0];
-			if (validateFile(file) === false) {
-				return;
-			}
-			const dropArea = document.getElementById("drop-area");
-			document.getElementById("preview").classList.remove("hidden");
-			document.getElementById("preview").classList.add("grid");
-			document
-				.getElementById("btn-analize")
-				.scrollIntoView({ behavior: "smooth" });
-			dropArea.textContent = "📄" + file.name;
-			const reader = new FileReader();
-			reader.onload = function (e) {
-				const pdfData = new Uint8Array(e.target.result);
-				pdfjsLib.getDocument(pdfData).promise.then((pdf) => {
-					pdf.getPage(1).then((page) => {
-						const scale = 1.5;
-						const viewport = page.getViewport({ scale });
-						const canvas = document.getElementById("pdfCanvas");
-						const context = canvas.getContext("2d");
-						canvas.height = viewport.height;
-						canvas.width = viewport.width;
-						const renderContext = {
-							canvasContext: context,
-							viewport: viewport,
-						};
-						page.render(renderContext);
-					});
-				});
-			};
-			reader.readAsArrayBuffer(file);
-		});
+    function validateFile(file) {
+      if (
+        file == null ||
+        file.type !== "application/pdf" ||
+        file.size > 1 * 1024 * 1024
+      ) {
+        console.error("No file selected");
+        alert("El archivo debe ser un PDF y no debe superar 1MB");
+        return false;
+      } else {
+        return true;
+      }
+    }
+    function onSubmit(token) {
+      const cardContainer = document.getElementById("card-container");
+      const cardTemplate = document.getElementById("card-template");
+      const file = inputDoc.files?.[0];
+      if (!validateFile(file)) {
+        console.error("No file selected");
+        alert("No file selected");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("recaptcha", token);
+      formData.append("doc", file);
+      dialog.showModal();
+      fetch("/api/recap", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((gResponse) => {
+          if (gResponse.success && gResponse.success === false) {
+            console.error(gResponse.message);
+            alert(gResponse.message);
+            return;
+          }
+          localStorage.setItem("gResponse", JSON.stringify(gResponse));
+          const btnUpload = document.getElementById("btn-upload");
+          btnUpload.click();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        })
+        .finally(() => {
+          dialog.close();
+        });
+    }
+  </script>
+  <script is:inline type="module">
+    var { pdfjsLib } = globalThis;
+    function validateFile(file) {
+      if (
+        file == null ||
+        file.type !== "application/pdf" ||
+        file.size > 1 * 1024 * 1024
+      ) {
+        console.error("No file selected");
+        alert("El archivo debe ser un PDF y no debe superar 1MB");
+        return false;
+      } else {
+        return true;
+      }
+    }
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "/ajax/libs/pdf.js/4.5.136/pdf.worker.mjs";
+    document.getElementById("doc").addEventListener("change", () => {
+      const file = document.getElementById("doc").files[0];
+      if (validateFile(file) === false) {
+        return;
+      }
+      const dropArea = document.getElementById("drop-area");
+      document.getElementById("preview").classList.remove("hidden");
+      document.getElementById("preview").classList.add("grid");
+      document
+        .getElementById("btn-analize")
+        .scrollIntoView({ behavior: "smooth" });
+      dropArea.textContent = "📄" + file.name;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const pdfData = new Uint8Array(e.target.result);
+        pdfjsLib.getDocument(pdfData).promise.then((pdf) => {
+          pdf.getPage(1).then((page) => {
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale });
+            const canvas = document.getElementById("pdfCanvas");
+            const context = canvas.getContext("2d");
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            const renderContext = {
+              canvasContext: context,
+              viewport: viewport,
+            };
+            page.render(renderContext);
+          });
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    });
 
-		// If absolute URL from the remote server is provided, configure the CORS
-		// header on that server.
-	</script>
+    // If absolute URL from the remote server is provided, configure the CORS
+    // header on that server.
+  </script>
 </Layout>
 
 <script>
-	import { Chart, registerables } from "chart.js";
-	import { type CV, fieldsToCapitalizeES } from "../types/cv.ts";
-	const dialog = document.getElementById("modal") as HTMLDialogElement;
-	dialog.close();
-	dialog.addEventListener("keydown", (event) => {
-		if (event.key === "Escape") {
-			event.preventDefault(); // Evita que el diálogo se cierre
-		}
-	});
-	const inputDoc = document.getElementById("doc") as HTMLInputElement;
-	const btnUpload = document.getElementById(
-		"btn-upload",
-	) as HTMLButtonElement;
-	const cardContainer = document.getElementById(
-		"card-container",
-	) as HTMLDivElement;
-	const cardTemplate = document.getElementById(
-		"card-template",
-	) as HTMLDivElement;
-	const dropArea = document.getElementById("drop-area") as HTMLLabelElement;
+  import { Chart, registerables } from "chart.js";
+  import { type CV, fieldsToCapitalizeES } from "../types/cv.ts";
+  const dialog = document.getElementById("modal") as HTMLDialogElement;
+  dialog.close();
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault(); // Evita que el diálogo se cierre
+    }
+  });
+  const inputDoc = document.getElementById("doc") as HTMLInputElement;
+  const btnUpload = document.getElementById("btn-upload") as HTMLButtonElement;
+  const cardContainer = document.getElementById(
+    "card-container"
+  ) as HTMLDivElement;
+  const cardTemplate = document.getElementById(
+    "card-template"
+  ) as HTMLDivElement;
+  const dropArea = document.getElementById("drop-area") as HTMLLabelElement;
 
-	Chart.register(...registerables);
-	/* form.addEventListener("submit", (e) => {
+  Chart.register(...registerables);
+  /* form.addEventListener("submit", (e) => {
 		e.preventDefault();
 		const formData = new FormData(form);
 		console.log(formData);
 	}); */
-	btnUpload.addEventListener("click", async () => {
-		const reader = JSON.parse(localStorage.getItem("gResponse")!) as CV;
-		//Clear Card Container
-		cardContainer.innerHTML = "";
-		let totalScore = 0;
-		for (const key of Object.keys(reader)) {
-			const value = reader[key];
-			const card = cardTemplate.cloneNode(true) as HTMLDivElement;
-			card.removeAttribute("id");
-			card.querySelector("[data-score]")!.textContent = value.score;
-			totalScore += value.score;
-			const titleFeedback =
-				fieldsToCapitalizeES[key as keyof typeof fieldsToCapitalizeES];
-			card.querySelector("[data-feedbacktitle]")!.textContent =
-				titleFeedback;
-			card.querySelector("[data-feedback]")!.textContent = value.feedback;
-			card.classList.remove("hidden");
-			card.classList.add("flex");
-			cardContainer.appendChild(card);
-			new Chart(
-				card.querySelector("[data-canvas]") as HTMLCanvasElement,
-				{
-					type: "doughnut",
-					data: {
-						labels: ["GOOD", "BAD"],
-						datasets: [
-							{
-								label: "Score",
-								data: [value.score, 100 - value.score],
-								backgroundColor: [
-									"rgba(99, 235, 132,1)",
-									"rgba(235, 99, 132, 1)",
-								],
-								borderWidth: 1,
-							},
-						],
-					},
-					options: {
-						cutout: "70%",
-						plugins: {
-							legend: {
-								display: false,
-							},
-							title: {
-								display: false,
-							},
-						},
-						transitions: {
-							show: {
-								animations: {
-									x: {
-										from: 0,
-									},
-									y: {
-										from: 0,
-									},
-								},
-							},
-							hide: {
-								animations: {
-									x: {
-										to: 0,
-									},
-									y: {
-										to: 0,
-									},
-								},
-							},
-						},
-					},
-				},
-			);
-		}
-		document.getElementById("pdfCanvas")?.classList.remove("md:col-span-2");
-		document.getElementById("pdfCanvas")?.classList.add("md:col-span-1");
-		document.getElementById("totalContainer")?.classList.remove("hidden");
-		document.getElementById("totalScoreText")!.textContent = (
-			totalScore / 11
-		).toFixed(0);
-		const totalChart = document.getElementById(
-			"totalScore",
-		) as HTMLCanvasElement;
-		Chart.getChart(totalChart)?.destroy();
-		new Chart(totalChart, {
-			type: "doughnut",
-			data: {
-				labels: ["GOOD", "BAD"],
-				datasets: [
-					{
-						label: "Score",
-						data: [totalScore / 11, 100 - totalScore / 11],
-						backgroundColor: [
-							"rgba(99, 235, 132,1)",
-							"rgba(235, 99, 132, 1)",
-						],
-						borderWidth: 1,
-					},
-				],
-			},
-			options: {
-				cutout: "70%",
-				plugins: {
-					legend: {
-						display: false,
-					},
-					title: {
-						display: false,
-					},
-				},
-				transitions: {
-					show: {
-						animations: {
-							x: {
-								from: 0,
-							},
-							y: {
-								from: 0,
-							},
-						},
-					},
-					hide: {
-						animations: {
-							x: {
-								to: 0,
-							},
-							y: {
-								to: 0,
-							},
-						},
-					},
-				},
-			},
-		});
-	});
-	dropArea.addEventListener("dragover", (e) => {
-		e.preventDefault();
-		dropArea.classList.add("bg-slate-300");
-	});
-	dropArea.addEventListener("dragleave", (e) => {
-		e.preventDefault();
-		dropArea.classList.remove("bg-slate-300");
-	});
-	function validateFile(file: File) {
-		if (
-			file == null ||
-			file.type !== "application/pdf" ||
-			file.size > 1 * 1024 * 1024
-		) {
-			console.error("No file selected");
-			alert("El archivo debe ser un PDF y no debe superar 1MB");
-			return false;
-		} else {
-			return true;
-		}
-	}
-	dropArea.addEventListener("drop", (e) => {
-		e.preventDefault();
-		dropArea.classList.remove("bg-slate-300");
-		const file = e.dataTransfer?.files?.[0] as File;
-		if (validateFile(file) === false) {
-			return;
-		} else if (e.dataTransfer?.files) {
-			inputDoc.files = e.dataTransfer.files;
-			inputDoc.dispatchEvent(new Event("change"));
-		}
-	});
+  btnUpload.addEventListener("click", async () => {
+    const reader = JSON.parse(localStorage.getItem("gResponse")!) as CV;
+    //Clear Card Container
+    cardContainer.innerHTML = "";
+    let totalScore = 0;
+    for (const key of Object.keys(reader)) {
+      const value = reader[key];
+      const card = cardTemplate.cloneNode(true) as HTMLDivElement;
+      card.removeAttribute("id");
+      card.querySelector("[data-score]")!.textContent = value.score;
+      totalScore += value.score;
+      const titleFeedback =
+        fieldsToCapitalizeES[key as keyof typeof fieldsToCapitalizeES];
+      card.querySelector("[data-feedbacktitle]")!.textContent = titleFeedback;
+      card.querySelector("[data-feedback]")!.textContent = value.feedback;
+      card.classList.remove("hidden");
+      card.classList.add("flex");
+      cardContainer.appendChild(card);
+      new Chart(card.querySelector("[data-canvas]") as HTMLCanvasElement, {
+        type: "doughnut",
+        data: {
+          labels: ["GOOD", "BAD"],
+          datasets: [
+            {
+              label: "Score",
+              data: [value.score, 100 - value.score],
+              backgroundColor: [
+                "rgba(99, 235, 132,1)",
+                "rgba(235, 99, 132, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          cutout: "70%",
+          plugins: {
+            legend: {
+              display: false,
+            },
+            title: {
+              display: false,
+            },
+          },
+          transitions: {
+            show: {
+              animations: {
+                x: {
+                  from: 0,
+                },
+                y: {
+                  from: 0,
+                },
+              },
+            },
+            hide: {
+              animations: {
+                x: {
+                  to: 0,
+                },
+                y: {
+                  to: 0,
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+    document.getElementById("pdfCanvas")?.classList.remove("md:col-span-2");
+    document.getElementById("pdfCanvas")?.classList.add("md:col-span-1");
+    document.getElementById("totalContainer")?.classList.remove("hidden");
+    document.getElementById("totalScoreText")!.textContent = (
+      totalScore / 11
+    ).toFixed(0);
+    const totalChart = document.getElementById(
+      "totalScore"
+    ) as HTMLCanvasElement;
+    Chart.getChart(totalChart)?.destroy();
+    new Chart(totalChart, {
+      type: "doughnut",
+      data: {
+        labels: ["GOOD", "BAD"],
+        datasets: [
+          {
+            label: "Score",
+            data: [totalScore / 11, 100 - totalScore / 11],
+            backgroundColor: ["rgba(99, 235, 132,1)", "rgba(235, 99, 132, 1)"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        cutout: "70%",
+        plugins: {
+          legend: {
+            display: false,
+          },
+          title: {
+            display: false,
+          },
+        },
+        transitions: {
+          show: {
+            animations: {
+              x: {
+                from: 0,
+              },
+              y: {
+                from: 0,
+              },
+            },
+          },
+          hide: {
+            animations: {
+              x: {
+                to: 0,
+              },
+              y: {
+                to: 0,
+              },
+            },
+          },
+        },
+      },
+    });
+  });
+  dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropArea.classList.add("bg-slate-300");
+  });
+  dropArea.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    dropArea.classList.remove("bg-slate-300");
+  });
+  function validateFile(file: File) {
+    if (
+      file == null ||
+      file.type !== "application/pdf" ||
+      file.size > 1 * 1024 * 1024
+    ) {
+      console.error("No file selected");
+      alert("El archivo debe ser un PDF y no debe superar 1MB");
+      return false;
+    } else {
+      return true;
+    }
+  }
+  dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropArea.classList.remove("bg-slate-300");
+    const file = e.dataTransfer?.files?.[0] as File;
+    if (validateFile(file) === false) {
+      return;
+    } else if (e.dataTransfer?.files) {
+      inputDoc.files = e.dataTransfer.files;
+      inputDoc.dispatchEvent(new Event("change"));
+    }
+  });
 </script>
 <style>
-	#card {
-	}
-	.spinner-container {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100vh;
-	}
+  #card {
+  }
+  .spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
 
-	.spinner {
-		width: 50px;
-		height: 50px;
-		border: 5px solid #ccc;
-		border-top: 5px solid #3498db;
-		border-radius: 50%;
-		animation: spin 2s linear infinite;
-	}
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ccc;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+  }
 
-	.complete {
-		display: none;
-		width: 50px;
-		height: 50px;
-	}
+  .complete {
+    display: none;
+    width: 50px;
+    height: 50px;
+  }
 
-	.complete.active {
-		display: block;
-		fill: #2ecc71;
-	}
+  .complete.active {
+    display: block;
+    fill: #2ecc71;
+  }
 
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
-	}
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 </style>
