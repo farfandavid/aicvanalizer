@@ -1,41 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
-const countryCode = Astro.request.headers.get("CF-IPCountry");
-const country = countryCode
-  ? new Intl.DisplayNames(["es"], { type: "region" }).of(countryCode)
-  : "Desconocido";
-console.log(country);
 ---
 
 <Layout title="AI CV Analizer">
-  <div class="w-full hidden">
-    <a
-      href="https://cafecito.app/farfetchdev"
-      rel="noopener noreferrer"
-      target="_blank"
-      ><img
-        srcset="https://cdn.cafecito.app/imgs/buttons/button_1.png 1x, https://cdn.cafecito.app/imgs/buttons/button_1_2x.png 2x, https://cdn.cafecito.app/imgs/buttons/button_1_3.75x.png 3.75x"
-        src="https://cdn.cafecito.app/imgs/buttons/button_1.png"
-        alt="Invitame un café en cafecito.app"
-      /></a
-    >
-    <form action="https://www.paypal.com/donate" method="post" target="_top">
-      <input type="hidden" name="hosted_button_id" value="9X5M3HPLKJZEN" />
-      <input
-        type="image"
-        src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"
-        name="submit"
-        title="PayPal - The safer, easier way to pay online!"
-        alt="Donate with PayPal button"
-      />
-      <img
-        alt=""
-        src="https://www.paypal.com/en_AR/i/scr/pixel.gif"
-        width="1"
-        height="1"
-      />
-    </form>
-  </div>
   <main class="md:w-3/5 mx-auto">
     <h1 class="text-center font-bold text-2xl my-4 uppercase">
       ai cv analizer
