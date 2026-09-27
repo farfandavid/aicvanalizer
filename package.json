@@ -19,7 +19,7 @@
     "@types/node": "^22.4.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "astro": "^7.2.8",
+    "astro": "^7.3.4",
     "astro-gemini-cv-analizer": "file:",
     "chart.js": "^4.4.3",
     "cors": "^2.8.5",
