@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.2",
-    "@astrojs/node": "^8.3.3",
+    "@astrojs/node": "^11.0.2",
     "@astrojs/react": "^3.6.2",
     "@astrojs/tailwind": "^5.1.0",
     "@google/generative-ai": "^0.17.0",
@@ -23,7 +23,7 @@
     "astro-gemini-cv-analizer": "file:",
     "chart.js": "^4.4.3",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "express": "^4.22.0",
     "express-rate-limit": "^7.4.0",
     "nanostores": "^0.11.2",
     "preact": "^10.23.2",
